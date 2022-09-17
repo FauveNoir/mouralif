@@ -538,7 +538,7 @@ class GridWindow(Gtk.Window):
         about = Gtk.AboutDialog()
         about.set_program_name("Mouralif")
         about.set_version("0.1")
-        about.set_authors("Fauve alias Idriss al Idrissi")
+        about.set_authors(["Fauve alias Idriss al Idrissi"])
         about.set_copyright("CC-by-sa Fauve")
         about.set_comments("Utilitaire de génération decouverture complette de livre")
         about.set_website("http://taniere.info")
