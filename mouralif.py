@@ -150,7 +150,7 @@ def makeColorObject(colorTuple):
 
 def defineMainColor(path):
     # Définit la couleur principale par défat de la couverture.
-    viewWaitingMessage(_("Detection de la couleur dominante"))
+    viewWaitingMessage("Detection de la couleur dominante")
     convertFirstPageToimage(path)
     color_thief = ColorThief(makeTempExampleName(path))
     dominant_color = color_thief.get_color(quality=1)
@@ -302,7 +302,7 @@ def setColor(pdf):
 def setWidth():
     # Positionne l’épaisseur par défaut de la tranche.
     defaultWidth="1cm"
-    choosenWidth=makeUserQuestion(_("Épaisseur de tranche"), defaultWidth)
+    choosenWidth=makeUserQuestion("Épaisseur de tranche", defaultWidth)
 
     return choosenWidth
 
@@ -430,7 +430,7 @@ def getFieldFromMetadata(field, metadata):
 
 def getPdfAuthor(metadata):
     # Fonction de récupération du nom de l’auteur
-    viewWaitingMessage(_("Extraction des métadonées"))
+    viewWaitingMessage("Extraction des métadonées")
     author = getFieldFromMetadata("Author", metadata)
     return author
 
