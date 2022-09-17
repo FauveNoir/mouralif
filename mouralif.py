@@ -616,14 +616,14 @@ class GridWindow(Gtk.Window):
         self.spiner = Gtk.Spinner()
         self.LabelState =  Gtk.Label(label="")
         buttonDonate = Gtk.LinkButton(uri="https://paypal.me/ihidev", image=donateImage)
-        buttonDonate2 = Gtk.LinkButton(uri="https://paypal.me/ihidev", label="Ce logiciel est gratuit mais vous pouvez faire un don et ça serait gentil :)")
+        #buttonDonate2 = Gtk.LinkButton(uri="https://paypal.me/ihidev", label="Ce logiciel est gratuit mais vous pouvez faire un don et ça serait gentil :)")
         backgroundDonateColor = Gdk.color_parse('#234fdb')
         buttonDonate.modify_bg(Gtk.StateType.NORMAL, backgroundDonateColor)
         buttonDonate.set_always_show_image(True)
 
-        buttonDonate2.get_child().set_use_markup(True)
-        buttonDonate2.get_child().set_line_wrap(True)
-        buttonDonate2.set_name("donatebutton")
+        #buttonDonate2.get_child().set_use_markup(True)
+        #buttonDonate2.get_child().set_line_wrap(True)
+        #buttonDonate2.set_name("donatebutton")
 
         self.buttonSelectSide=Gtk.Switch()
         self.buttonSelectSide.set_active(True)
@@ -655,7 +655,7 @@ class GridWindow(Gtk.Window):
         grid.attach_next_to(self.spiner,self.buttonCreate , Gtk.PositionType.BOTTOM, 1, 1)
         grid.attach_next_to(self.LabelState, self.spiner , Gtk.PositionType.RIGHT, 2, 1)
         grid.attach_next_to(buttonDonate,self.spiner, Gtk.PositionType.BOTTOM, 3, 2)
-        grid.attach_next_to(buttonDonate2, buttonDonate, Gtk.PositionType.BOTTOM, 3, 2)
+        #grid.attach_next_to(buttonDonate2, buttonDonate, Gtk.PositionType.BOTTOM, 3, 2)
 
 screen = Gdk.Screen.get_default()
 #styleContext = Gtk.StyleContext()
