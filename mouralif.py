@@ -638,6 +638,7 @@ class GridWindow(Gtk.Window):
         labelOrientation=Gtk.AccelLabel(label="Gauche à droite")
         labelLastPageInclusion=Gtk.AccelLabel(label="Inclure la dernière page")
         self.takeTheInputedLastPage=Gtk.CheckButton()
+        self.takeTheInputedLastPage.set_active(True)
 
         grid.attach(self.fileChooser, 0, 0, 3, 1)
         grid.attach(labelSpinWidth, 0, 1, 1, 1)
