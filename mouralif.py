@@ -591,6 +591,7 @@ class GridWindow(Gtk.Window):
         self.fileChooser = Gtk.FileChooserButton.new_with_dialog(validFileChooser)
         self.fileChooser.connect("selection-changed", on_file_selected_no_lag)
         labelSpinWidth = Gtk.AccelLabel(label="Épaisseur de tranche")
+        labelSpinWidth.set_tooltip_text("Épaisseur du livre imprimé avec la pile de toutes les pages.\nCette épaisseur sera celle de la tranche de la couverture complette.")
         self.inputWidthSelector = Gtk.SpinButton.new(adjustment=spinWidth,climb_rate=1, digits=2 )
 
         self.inputUnitStore = Gtk.ComboBox.new_with_model(unit_store)
@@ -604,12 +605,16 @@ class GridWindow(Gtk.Window):
         spinSizeStack.pack_start(self.inputUnitStore, True, True, 0)
 
         self.labelLeftInscription = Gtk.AccelLabel(label="Gauche")
-        self.entryLeftInscription = Gtk.Entry(placeholder_text="John Doe")
+        self.labelLeftInscription.set_tooltip_text("Label à inscrire tout à gauche de la tranche\nPar défaut il s’agira du nom de l’auteur s’il est contenu dans le fichier en entrée")
+        self.entryLeftInscription = Gtk.Entry(placeholder_text="Voltaire")
         labelCenterInscription = Gtk.AccelLabel(label="Centre")
-        self.entryCenterInscription = Gtk.Entry(placeholder_text="The Best Book")
+        labelCenterInscription.set_tooltip_text("Label à inscrire au centre de la tranche\nPar défaut il s’agira du nom de l’ouvrage s’il est contenu dans le fichier en entrée")
+        self.entryCenterInscription = Gtk.Entry(placeholder_text="Candide ou l’Optimisme")
         labelRightInscription = Gtk.AccelLabel(label="Droite")
-        self.entryRightInscription = Gtk.Entry(placeholder_text="2019")
+        labelRightInscription.set_tooltip_text("Label à inscrire tout à droite de la tranche\nPar défaut il s’agira de la date de l’ouvrage s’il est contenu dans le fichier en entrée")
+        self.entryRightInscription = Gtk.Entry(placeholder_text="1759")
         labelSpinColor = Gtk.AccelLabel(label="Couleur de tranche")
+        labelSpinColor.set_tooltip_text("Couleur à utiliser comme fond de al tranche")
         self.buttonSelectSpinColor = Gtk.ColorButton.new()
         self.buttonCreate = Gtk.Button(label="Créer la couverture")
         self.buttonCreate.set_sensitive(False)
@@ -636,8 +641,10 @@ class GridWindow(Gtk.Window):
         self.buttonSelectSide.set_active(True)
         self.buttonSelectSide.props.halign = Gtk.Align.START
         textOrientation=Gtk.AccelLabel(label="Gauche à droite")
+        textOrientation.set_tooltip_text("Si actif, prend en compte les langues s’écrivant de gauche à droite (latin, français, anglais, allemand, cyrillique, russe, ukrainien…) sinon prend en compte les langues s’écrivant de droite à gauche (arabe, hébreux…)")
         labelOrientation=Gtk.AccelLabel(label="Gauche à droite")
-        labelLastPageInclusion=Gtk.AccelLabel(label="Inclure la dernière page")
+        self.labelLastPageInclusion=Gtk.AccelLabel(label="Inclure la dernière page")
+        self.labelLastPageInclusion.set_tooltip_text("Inclure la dernière page du fichier si celui-ci contient un nombre de pages paire")
         self.takeTheInputedLastPage=Gtk.CheckButton()
         self.takeTheInputedLastPage.set_active(True)
 
@@ -655,10 +662,10 @@ class GridWindow(Gtk.Window):
 
         grid.attach_next_to(textOrientation, labelSpinColor, Gtk.PositionType.BOTTOM, 1, 1)
         grid.attach_next_to(self.buttonSelectSide,textOrientation , Gtk.PositionType.RIGHT, 2, 1)
-        grid.attach_next_to(labelLastPageInclusion,textOrientation , Gtk.PositionType.BOTTOM, 1, 1)
-        grid.attach_next_to(self.takeTheInputedLastPage, labelLastPageInclusion, Gtk.PositionType.RIGHT, 2, 1)
+        grid.attach_next_to(self.labelLastPageInclusion,textOrientation , Gtk.PositionType.BOTTOM, 1, 1)
+        grid.attach_next_to(self.takeTheInputedLastPage, self.labelLastPageInclusion, Gtk.PositionType.RIGHT, 2, 1)
 
-        grid.attach_next_to(self.buttonCreate, labelLastPageInclusion, Gtk.PositionType.BOTTOM, 3, 1)
+        grid.attach_next_to(self.buttonCreate, self.labelLastPageInclusion, Gtk.PositionType.BOTTOM, 3, 1)
 
         grid.attach_next_to(self.spiner,self.buttonCreate , Gtk.PositionType.BOTTOM, 1, 1)
         grid.attach_next_to(self.LabelState, self.spiner , Gtk.PositionType.RIGHT, 2, 1)
@@ -835,6 +842,22 @@ def defineNewSetOfTemporaryFiles():
     print(LastPageFileName.name)
     print(FinalFileName.name)
 
+
+def setLastPageInclusionWidgetsInsensitives():
+    # Fait en sorte après importation du pdf que la coche d’inclusion de dernière page se grise
+    win.takeTheInputedLastPage.set_active(False)
+    win.labelLastPageInclusion.set_sensitive(False)
+    win.takeTheInputedLastPage.set_sensitive(False)
+
+
+def refreshLastPageInclusionWidgets(configuration):
+    # Detecte si le pdf importé a un nombre de page paire ou impaire
+    print("=================")
+    pageNumber=configuration["pageNumber"]
+
+    if not ( pageNumber % 2 == 0 ):
+        setLastPageInclusionWidgetsInsensitives()
+
 def on_file_selected():
     # Procéssus à enclencher dès le click sur le bouton de selection de pdf
     try:
@@ -850,9 +873,8 @@ def on_file_selected():
         win.buttonSelectSpinColor.set_color(info["color"])
 
         print("Finish pdf import")
-        global ProjectLabel
-        print(ProjectLabel)
         finalMessage("Import achevé")
+        refreshLastPageInclusionWidgets(info)
         win.buttonCreate.set_sensitive(True)
     except:
         finalMessage("Someting wrong happend")
@@ -883,6 +905,7 @@ def getChoosenParameters():
     return configuration
 
 
+
 def buildTheTexProject(configuration):
     # Enclenchement du procéssus TeX, avec création des sources et compilation
 
@@ -906,6 +929,7 @@ def createTheCover(widget):
     print("enter createTheCover()")
     configuration=getChoosenParameters()
     print(configuration)
+    print("machin truc")
     buildTheTexProject(configuration)
     openPdfFile(FinalFileName.name)
 
