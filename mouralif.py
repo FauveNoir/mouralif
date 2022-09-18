@@ -615,15 +615,21 @@ class GridWindow(Gtk.Window):
         self.buttonCreate.connect("clicked", createTheCover)
         self.spiner = Gtk.Spinner()
         self.LabelState =  Gtk.Label(label="")
-        buttonDonate = Gtk.LinkButton(uri="https://paypal.me/ihidev", image=donateImage)
-        #buttonDonate2 = Gtk.LinkButton(uri="https://paypal.me/ihidev", label="Ce logiciel est gratuit mais vous pouvez faire un don et ça serait gentil :)")
+        #buttonDonateImageStyle = Gtk.LinkButton(uri="https://paypal.me/ihidev", image=donateImage)
+        buttonDonate = Gtk.LinkButton(uri="https://paypal.me/ihidev", label="Ce logiciel est gratuit \n"
+                "mais vous pouvez faire un don \n"
+                "et ça serait gentil :)")
+
+        buttonDonate.get_child().set_line_wrap(True)
+        buttonDonate.get_child().set_max_width_chars(32)
+        buttonDonate.get_child().set_justify(Gtk.Justification.CENTER)
         backgroundDonateColor = Gdk.color_parse('#234fdb')
         buttonDonate.modify_bg(Gtk.StateType.NORMAL, backgroundDonateColor)
         buttonDonate.set_always_show_image(True)
 
-        #buttonDonate2.get_child().set_use_markup(True)
-        #buttonDonate2.get_child().set_line_wrap(True)
-        #buttonDonate2.set_name("donatebutton")
+        buttonDonate.get_child().set_use_markup(True)
+        buttonDonate.get_child().set_line_wrap(True)
+        buttonDonate.set_name("donatebutton")
 
         self.buttonSelectSide=Gtk.Switch()
         self.buttonSelectSide.set_active(True)
@@ -654,13 +660,40 @@ class GridWindow(Gtk.Window):
 
         grid.attach_next_to(self.spiner,self.buttonCreate , Gtk.PositionType.BOTTOM, 1, 1)
         grid.attach_next_to(self.LabelState, self.spiner , Gtk.PositionType.RIGHT, 2, 1)
-        grid.attach_next_to(buttonDonate,self.spiner, Gtk.PositionType.BOTTOM, 3, 2)
-        #grid.attach_next_to(buttonDonate2, buttonDonate, Gtk.PositionType.BOTTOM, 3, 2)
+        #grid.attach_next_to(buttonDonateImageStyle,self.spiner, Gtk.PositionType.BOTTOM, 3, 2)
+        grid.attach_next_to(buttonDonate, self.spiner, Gtk.PositionType.BOTTOM, 3, 2)
 
 screen = Gdk.Screen.get_default()
 #styleContext = Gtk.StyleContext()
 
-css = b'#donatebutton { min-height: 100px ; background-image: linear-gradient(to bottom right, #0e9afc, #0352fc); color: #f7f7f7; } #donatebutton * { color: white; text-decoration: none; font-size: 15px; }  '
+css = b'''#donatebutton
+    {
+        min-height: 100px ;
+        background-image: linear-gradient(to bottom right, #0e9afc, #0352fc);
+        color: #f7f7f7;
+        background-image: url("smiling-cat.svg");
+        background-color: #234FDB;
+        background-repeat: no-repeat;
+        background-position: right bottom;
+        margin: 0;
+        padding: 0;
+    }
+
+    #donatebutton > *
+    {
+        /*background-image: url("smiling-cat.svg");*/
+        background-repeat: no-repeat;
+        background-position: right bottom;
+        margin: 10px 40px 30px;
+    }
+
+    #donatebutton *
+    {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+    }
+'''
 css_provider = Gtk.CssProvider()
 css_provider.load_from_data(css)
 context = Gtk.StyleContext()
