@@ -540,7 +540,7 @@ class GridWindow(Gtk.Window):
         about.set_version("0.1")
         about.set_authors(["Fauve alias Idriss al Idrissi"])
         about.set_copyright("CC-by-sa Fauve")
-        about.set_comments("Utilitaire de génération decouverture complette de livre")
+        about.set_comments("Utilitaire de génération de couverture complette de livre")
         about.set_website("http://taniere.info")
         logo = GdkPixbuf.Pixbuf.new_from_file("logo-mouralif.png")
         about.set_logo(logo)
