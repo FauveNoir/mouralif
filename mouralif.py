@@ -677,6 +677,11 @@ css = b'''#donatebutton
         background-position: right bottom;
         margin: 0;
         padding: 0;
+        margin-left: -10px;
+        margin-right: -10px;
+        margin-bottom: -10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
 
     #donatebutton > *
