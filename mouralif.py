@@ -369,8 +369,9 @@ def texCodeForLastPageWhenOdd(width):
 def whatToDoForLastPage(configuration):
     # Déffinition de la portion du code TeX selon que la dernière page soit paire ou impaire
     pageNumber=configuration["pageNumber"]
+    askedLastPage=configuration["askedLastPage"]
 
-    if pageNumber % 2 == 0:
+    if ( pageNumber % 2 == 0 ) and ( askedLastPage == True ):
         return texCodeForLastPageWhenEven(configuration)
     else:
         return texCodeForLastPageWhenOdd(configuration["pdfWidth"])
@@ -864,18 +865,19 @@ def getUnitLabelFromIndex(index):
 def getChoosenParameters():
     # Préparation de la configuration suggérée pour le PDF en entrée.
     configuration = {
-        "path"           : win.fileChooser.get_filename(),
-        "color"          : win.buttonSelectSpinColor.get_color(),
-        "left"           : win.entryLeftInscription.get_text(),
-        "center"         : win.entryCenterInscription.get_text(),
-        "right"          : win.entryRightInscription.get_text(),
-        "spinWidth"      : win.inputWidthSelector.get_text(),
-        "unit"           : getUnitLabelFromIndex(win.inputUnitStore.get_active()),
-        "pdfWidth"       : info["pdfWidth"],
-        "pdfHeight"      : info["pdfHeight"],
-        "pageNumber"     : info["pageNumber"],
-        "orientation"    : win.buttonSelectSide.get_active(),
-        "forgroundColor" : setForegroundColor(win.buttonSelectSpinColor.get_color())
+        "path"            : win.fileChooser.get_filename(),
+        "color"           : win.buttonSelectSpinColor.get_color(),
+        "left"            : win.entryLeftInscription.get_text(),
+        "center"          : win.entryCenterInscription.get_text(),
+        "right"           : win.entryRightInscription.get_text(),
+        "spinWidth"       : win.inputWidthSelector.get_text(),
+        "unit"            : getUnitLabelFromIndex(win.inputUnitStore.get_active()),
+        "pdfWidth"        : info["pdfWidth"],
+        "pdfHeight"       : info["pdfHeight"],
+        "pageNumber"      : info["pageNumber"],
+        "orientation"     : win.buttonSelectSide.get_active(),
+        "askedLastPage"   : win.takeTheInputedLastPage.get_active(),
+        "forgroundColor"  : setForegroundColor(win.buttonSelectSpinColor.get_color())
     }
 
     return configuration
