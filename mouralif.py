@@ -689,8 +689,7 @@ css = b'''#donatebutton
         margin-left: -10px;
         margin-right: -10px;
         margin-bottom: -10px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        border-radius: 0;
     }
 
     #donatebutton > *
@@ -706,6 +705,11 @@ css = b'''#donatebutton
         color: white;
         text-decoration: none;
         font-size: 20px;
+    }
+
+    screen
+    {
+        border-radius: 4px;
     }
 '''
 css_provider = Gtk.CssProvider()
